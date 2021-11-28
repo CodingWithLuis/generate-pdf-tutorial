@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use PDF;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class UserController extends Controller
 {
@@ -17,7 +17,7 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return view('users', compact('users'));
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -29,9 +29,10 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        $pdf = PDF::loadView('users-pdf', ['users' => $users]);
+        /* view()->share('users.pdf', $users); */
+
+        $pdf = PDF::loadView('users.pdf', ['users' => $users]);
 
         return $pdf->download('users.pdf');
     }
 }
-
